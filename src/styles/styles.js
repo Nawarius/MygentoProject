@@ -1,12 +1,19 @@
 const { makeStyles } = require("@material-ui/core");
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme)=>({
+    root: {
+        '& .MuiTextField-root': {
+          height:'40px'
+        },
+    },
+    mainContainer:{
+        position:'absolute',
+        marginLeft:'16px'
+        // left: '256px',
+        // top: '120px'
+    },
     title:{
-        position: 'absolute',
-        width: '928px',
         height: '38px',
-        left: '256px',
-        top: '120px',
         fontFamily: 'SF Pro Display',
         fontStyle: 'normal',
         fontWeight: '600',
@@ -15,7 +22,6 @@ const useStyles = makeStyles({
         color: '#262626',
     },
     name:{
-        position: 'static',
         width:'256px',
         height: '22px',
         left: '0px',
@@ -33,14 +39,13 @@ const useStyles = makeStyles({
         order: '0',
         alignSelf: 'stretch',
         flexGrow: '0',
-        margin: '0px 2px',
+        marginBottom: '2px',
         marginRight:'80px',
     },
     nameContainer:{
-        position:'absolute',
         top:'268px',
         left:'256px',
-        marginBottom:'2px'
+        marginBottom:'2px',
     },
     inputs:{
         background: '#FFFFFF',
@@ -48,7 +53,7 @@ const useStyles = makeStyles({
         border: '1px solid #D9D9D9',
         boxSizing: 'border-box',
         bordenrRadius: '2px',
-        marginRight:'80px'
+        marginRight:'80px',
     },
     resume:{
         fontFamily: 'SF Pro Display',
@@ -58,14 +63,11 @@ const useStyles = makeStyles({
         lineHeight: '22px',
     },
     maleContainer:{
-        position: 'absolute',
-        width: '928px',
         height: '38px',
         left: '256px',
         top: '492px',  
     },
     maleTitle:{
-        position:'absolute',
         fontFamily: 'SF Pro Display',
         fontStyle: 'normal',
         fontWeight: '600',
@@ -88,6 +90,6 @@ const useStyles = makeStyles({
         top:'557px',
         left:'256px'
     }
-})
+}))
 
 export default useStyles
