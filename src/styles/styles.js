@@ -8,7 +8,6 @@ const useStyles = makeStyles((theme)=>({
     },
     mainContainer:{
         position:'absolute',
-        marginLeft:'16px',
         // left: '256px',
         // top: '120px'
     },

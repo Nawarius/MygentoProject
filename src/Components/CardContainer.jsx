@@ -12,16 +12,21 @@ const CardContainer = ()=>{
     const [gitHub, setGitHub] = useState(null)
     const [fileName, setFileName] = useState(null)
     const [male, setMale] = useState(null)
+
+    //Доступ к файлу резюме
     const resumeFileRef = useRef()
-    const checkRef = useRef()
+    //Блок для ошибок
     const [firstNameError, setFirstNameError] = useState(false)
     const [lastNameError, setLastNameError] = useState(false)
     const [emailError, setEmailError] = useState(false)
     const [gitHubError, setGitHubError] = useState(false)
     const [fileError, setFileError] = useState(null)
+
+    //Блок для чекбокса и доступа к кнопке ОТПРАВИТЬ
     const [checked, setChecked] = useState(false);
     const [acessButton, setAcess] = useState(false)
 
+    //Блок для открытия закрытия двух модальных окон
     const [openModalPolicy, setOpenModalPolicy] = useState(false)
     const [openModalConfirm, setOpenModalConfirm] = useState(false)
 
@@ -29,27 +34,21 @@ const CardContainer = ()=>{
     const handleClosePolicy = () => {setOpenModalPolicy(false)}
     const handleOpenConfirm = () => {setOpenModalConfirm(true)}
     const handleCloseConfirm = () => {setOpenModalConfirm(false)}
-    const handleCloseConfirmWithNull = (e) => {
-        setOpenModalConfirm(false)
-        setFirstName(null)
-        setLastName(null)
-        setEmail(null)
-        setGitHub(null)
-        setFileName(null)
-        setMale(null)
-        setAcess(false)
-        console.log(firstName)
-    }
 
+    // Если все обязательные поля введены и введены без ошибок - открывает доступ к кнопке
     if(firstName && !firstNameError && lastName && !lastNameError && email && !emailError && fileName && !fileError && checked && male && !acessButton) {
         setAcess(true)
     }
+    // Обработчик чекбокса
     const handleChack = (event) => {
+        // Если нажатие на чекбокс прилетело с чекбокса
         if(event.target.checked != undefined) setChecked(!checked)
+        // Если нажатие на чекбокс прилетело с окна конфиденциальности
         else setChecked(true)
         setAcess(false)
         setOpenModalPolicy(false)
     }
+    //Главный обработчик onChange инпутов
     const changeHandle = (e)=>{
         switch(e.target.name){
             case 'firstName':
@@ -77,8 +76,9 @@ const CardContainer = ()=>{
                 const current = e.target.value
                 setEmail(current)
                 let hasDog = false
+                //Если поле ввода пустое, убирает ошибку
                 if(!current) hasDog = true
-
+                //Если в поле ввода есть хоть один @ ошибки не будет
                 for(let i = 0; i<current.length; i++){
                     if(current[i]==='@') hasDog = true
                 }
@@ -91,16 +91,20 @@ const CardContainer = ()=>{
                 break
             }
             case 'gitHub':{
+                //Выдает ошибку, если ссылка не начинается с https://github.com
                 const regexp = new RegExp('^https://github.com')
                 const current = e.target.value
                 setGitHub(current)
                 let result = current.match(regexp)
+                //Если поле ввода НЕ ПУСТОЕ и оно не начинается с рег выражения, выкидывает ошибку
                 if(!result && current) setGitHubError('Проверьте правильность ссылки')
                 else setGitHubError(false)
                 break
             }
             case 'file':{
+                // Реф на скрытый инпут
                 setFileName(resumeFileRef.current.files[0].name)
+                //Если файл превышает 16 МВ выкидывает ошибку
                 const fileSizeMB = resumeFileRef.current.files[0].size/1024/1024
                 if(fileSizeMB>16){
                     setFileError(true)
@@ -118,19 +122,20 @@ const CardContainer = ()=>{
                 break
         }
     }
+    // Отменяет загрузку файла
     const cancelHandle = () => {
         setFileName(null)
         setAcess(false)
     }
     return <>
-        <Context.Provider value = {{changeHandle, cancelHandle, handleChack, acessButton, handleOpenPolicy, checkRef, handleOpenConfirm,
+        <Context.Provider value = {{changeHandle, cancelHandle, handleChack, acessButton, handleOpenPolicy, handleOpenConfirm,
             firstName, lastName, gitHub, email,
             checked, firstNameError, lastNameError, emailError, gitHubError, resumeFileRef, fileName, fileError}}>
             <CardPresent />
         </Context.Provider>
             <ModalPolicy handleClosePolicy = {handleClosePolicy} openModalPolicy = {openModalPolicy} handleChack = {handleChack}/>
             <ModalConfirm firstName = {firstName} handleCloseConfirm = {handleCloseConfirm} openModalConfirm = {openModalConfirm}
-            handleCloseConfirmWithNull = {handleCloseConfirmWithNull}></ModalConfirm>
+            ></ModalConfirm>
         </>
 }
 

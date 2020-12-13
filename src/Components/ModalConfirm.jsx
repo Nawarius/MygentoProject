@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TransitionsModal({handleCloseConfirm, openModalConfirm, firstName, handleCloseConfirmWithNull}) {
+export default function TransitionsModal({handleCloseConfirm, openModalConfirm, firstName}) {
   const classes = useStyles();
 
   return (
@@ -40,7 +40,7 @@ export default function TransitionsModal({handleCloseConfirm, openModalConfirm, 
         }}
       >
         <Fade in={openModalConfirm}>
-            <form onSubmit = {handleCloseConfirmWithNull}>
+            <form onSubmit = {handleCloseConfirm}>
             <Grid className = {classes.paper} style = {{textAlign:'center'}}>
                 <Grid container justify = 'center' style = {{position:'relative', marginTop:'40px', marginBottom:'8px'}}>
                     <Typography variant = 'h6' >Спасибо {firstName}!</Typography>

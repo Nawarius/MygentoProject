@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import {Button, FormControlLabel, Grid, Link, Radio, RadioGroup, TextField, Typography, Checkbox, Paper, IconButton} from '@material-ui/core'
+import {Button, FormControlLabel, Grid, Link, Radio, RadioGroup, TextField, Typography, Checkbox, Paper, IconButton, useMediaQuery} from '@material-ui/core'
 import useStyles from '../styles/styles'
 import AddIcon from '@material-ui/icons/Add';
 import {Context} from './CardContainer'
@@ -8,14 +8,20 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 
 const CardPresent = () => {
     const classes = useStyles()
-    const {changeHandle, firstNameError, lastNameError, emailError, acessButton, handleOpenPolicy, checkRef, handleOpenConfirm,
+    const matches = useMediaQuery('(min-width:800px)');
+    const {changeHandle, firstNameError, lastNameError, emailError, acessButton, handleOpenPolicy, handleOpenConfirm,
         firstName, lastName, gitHub, email,
         gitHubError, resumeFileRef, fileName, fileError, cancelHandle, handleChack, checked} = useContext(Context)
     
 
     return <>
-    <Grid className = {classes.mainContainer}>
-        <Grid xs = {12}><Typography className = {classes.title} style = {{marginBottom:'48px'}}>Анкета соискателя</Typography></Grid>
+    <Grid className = {classes.mainContainer} style = {{marginTop:matches?'120px':'108px',marginLeft:matches?'256px':'16px',paddingRight:matches?'auto':'16px' }}>
+        {matches && <Grid xs = {12}><Typography className = {classes.title}>Анкета соискателя</Typography></Grid>}
+        {!matches && <>
+            <Grid xs = {12}><Typography className = {classes.title}>Анкета </Typography></Grid>
+            <Grid xs = {12}><Typography className = {classes.title}>соискателя</Typography></Grid>
+            </>
+        }
         <Grid xs = {12}><Typography className = {classes.title} style = {{fontSize:'22px', marginBottom:'24px'}}>Личные данные</Typography></Grid>
 
         <Grid container style = {{marginBottom:'48px'}}>
@@ -84,7 +90,7 @@ const CardPresent = () => {
                 />
             </Grid>
             <Grid container style = {{marginBottom:'48px'}}>
-                <Grid item xs = {1}><Checkbox ref = {checkRef} color = 'primary' checked = {checked} onChange = {handleChack} style = {{marginRight:'8px', width:'16px', height:'16px', color:'#1890FF' }} /></Grid> 
+                <Grid item xs = {1}><Checkbox color = 'primary' checked = {checked} onChange = {handleChack} style = {{marginRight:'8px', width:'16px', height:'16px', color:'#1890FF' }} /></Grid> 
                 <Grid item xs = {11}><Typography className = {classes.name} style ={{width:'294px', marginTop:'6px'}}>* Я согласен с 
                     <Link style ={{cursor:'pointer'}} onClick = {handleOpenPolicy}>политикой конфиденциальности</Link>
                     </Typography>
