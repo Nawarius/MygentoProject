@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import CardPresent from './CardPresent'
+import ModalPolicy from './ModalPolicy'
+import ModalConfirm from './ModalConfirm'
 
 export const Context = React.createContext()
 
@@ -9,7 +11,9 @@ const CardContainer = ()=>{
     const [email, setEmail] = useState(null)
     const [gitHub, setGitHub] = useState(null)
     const [fileName, setFileName] = useState(null)
+    const [male, setMale] = useState(null)
     const resumeFileRef = useRef()
+    const checkRef = useRef()
     const [firstNameError, setFirstNameError] = useState(false)
     const [lastNameError, setLastNameError] = useState(false)
     const [emailError, setEmailError] = useState(false)
@@ -18,12 +22,33 @@ const CardContainer = ()=>{
     const [checked, setChecked] = useState(false);
     const [acessButton, setAcess] = useState(false)
 
-    if(firstName && !firstNameError && lastName && !lastNameError && email && !emailError && fileName && !fileError && checked && !acessButton) {
+    const [openModalPolicy, setOpenModalPolicy] = useState(false)
+    const [openModalConfirm, setOpenModalConfirm] = useState(false)
+
+    const handleOpenPolicy = () => {setOpenModalPolicy(true)}
+    const handleClosePolicy = () => {setOpenModalPolicy(false)}
+    const handleOpenConfirm = () => {setOpenModalConfirm(true)}
+    const handleCloseConfirm = () => {setOpenModalConfirm(false)}
+    const handleCloseConfirmWithNull = (e) => {
+        setOpenModalConfirm(false)
+        setFirstName(null)
+        setLastName(null)
+        setEmail(null)
+        setGitHub(null)
+        setFileName(null)
+        setMale(null)
+        setAcess(false)
+        console.log(firstName)
+    }
+
+    if(firstName && !firstNameError && lastName && !lastNameError && email && !emailError && fileName && !fileError && checked && male && !acessButton) {
         setAcess(true)
     }
     const handleChack = (event) => {
-      setChecked(event.target.checked);
-      setAcess(false)
+        if(event.target.checked != undefined) setChecked(!checked)
+        else setChecked(true)
+        setAcess(false)
+        setOpenModalPolicy(false)
     }
     const changeHandle = (e)=>{
         switch(e.target.name){
@@ -85,6 +110,10 @@ const CardContainer = ()=>{
                 }
                 break
             }
+            case 'male':{
+                setMale(e.target.value)
+                break
+            }
             default:
                 break
         }
@@ -94,10 +123,14 @@ const CardContainer = ()=>{
         setAcess(false)
     }
     return <>
-        <Context.Provider value = {{changeHandle, cancelHandle, handleChack, acessButton,
+        <Context.Provider value = {{changeHandle, cancelHandle, handleChack, acessButton, handleOpenPolicy, checkRef, handleOpenConfirm,
+            firstName, lastName, gitHub, email,
             checked, firstNameError, lastNameError, emailError, gitHubError, resumeFileRef, fileName, fileError}}>
             <CardPresent />
         </Context.Provider>
+            <ModalPolicy handleClosePolicy = {handleClosePolicy} openModalPolicy = {openModalPolicy} handleChack = {handleChack}/>
+            <ModalConfirm firstName = {firstName} handleCloseConfirm = {handleCloseConfirm} openModalConfirm = {openModalConfirm}
+            handleCloseConfirmWithNull = {handleCloseConfirmWithNull}></ModalConfirm>
         </>
 }
 

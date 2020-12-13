@@ -8,12 +8,12 @@ import AttachFileIcon from '@material-ui/icons/AttachFile';
 
 const CardPresent = () => {
     const classes = useStyles()
-    const {changeHandle, firstNameError, lastNameError, emailError, acessButton,
+    const {changeHandle, firstNameError, lastNameError, emailError, acessButton, handleOpenPolicy, checkRef, handleOpenConfirm,
+        firstName, lastName, gitHub, email,
         gitHubError, resumeFileRef, fileName, fileError, cancelHandle, handleChack, checked} = useContext(Context)
     
 
     return <>
-    
     <Grid className = {classes.mainContainer}>
         <Grid xs = {12}><Typography className = {classes.title} style = {{marginBottom:'48px'}}>Анкета соискателя</Typography></Grid>
         <Grid xs = {12}><Typography className = {classes.title} style = {{fontSize:'22px', marginBottom:'24px'}}>Личные данные</Typography></Grid>
@@ -22,7 +22,7 @@ const CardPresent = () => {
             <Grid className = {classes.nameContainer}>
                 <Grid item xs = {12}><Typography className = {classes.name}>Имя *</Typography></Grid>
                 <Grid item xs = {12}>
-                    <TextField size = 'small' placeholder = 'Имя' variant = 'outlined' error = {firstNameError} helperText = {firstNameError}
+                    <TextField type = 'text' size = 'small' placeholder = 'Имя' value = {firstName} variant = 'outlined' error = {firstNameError} helperText = {firstNameError}
                         className = {classes.inputs} name = 'firstName' onChange = {changeHandle}>
                     </TextField>
                 </Grid>
@@ -30,7 +30,7 @@ const CardPresent = () => {
             <Grid className = {classes.nameContainer} >
                 <Grid item xs = {12}><Typography className = {classes.name}>Фамилия *</Typography></Grid>
                 <Grid item xs = {12}>
-                    <TextField  size = 'small' placeholder = 'Фамилия' variant = 'outlined' className = {classes.inputs}
+                    <TextField  type = 'text' size = 'small' placeholder = 'Фамилия' value = {lastName} variant = 'outlined' className = {classes.inputs}
                         name = 'lastName' onChange = {changeHandle} error = {lastNameError} helperText = {lastNameError}>
                     </TextField>
                 </Grid>
@@ -41,13 +41,13 @@ const CardPresent = () => {
             <Grid className = {classes.nameContainer}>
                 <Grid item xs = {12}><Typography className = {classes.name}>Электронная почта *</Typography></Grid>
                 <Grid item xs = {12}>
-                    <TextField size = 'small' variant = 'outlined' className = {classes.inputs} style = {{marginRight:'80px'}} 
-                        placeholder = 'Электронная почта' name = 'email' onChange = {changeHandle} error = {emailError} helperText = {emailError}>
+                    <TextField type = 'email' size = 'small' variant = 'outlined' className = {classes.inputs} style = {{marginRight:'80px'}} 
+                        placeholder = 'Электронная почта' name = 'email' onChange = {changeHandle} error = {emailError} helperText = {emailError} value = {email}>
                     </TextField>
                 </Grid>
             </Grid>
         {!fileName && 
-            <Button component = 'label' style = {{width:'256px',marginTop:'22px'}}>
+            <Button component = 'label' style = {{width:'256px',marginTop:'22px', height:'40px'}}>
                 <input type="file" ref = {resumeFileRef} id="icon-button-file" name = 'file' hidden onChange = {changeHandle}/>
                 <AddIcon style={{position:'absolute', left:0}}/>
                 <Typography className = {classes.resume}> Загрузить резюме</Typography>
@@ -58,6 +58,7 @@ const CardPresent = () => {
                 <AttachFileIcon />
                 <Typography style = {{color:fileError?'red':'blue'}}>{fileName}</Typography>
                 <IconButton style = {{position:'absolute', right:0}} onClick = {cancelHandle}><ClearIcon /></IconButton>
+                {fileError && <Typography style = {{color:'red', fontSize:'11px'}}>Размер файла не может превышать 16 МВ</Typography>}
             </Grid>
         }
         </Grid>
@@ -69,8 +70,8 @@ const CardPresent = () => {
             </Grid>
             <Grid item xs = {12} container className = {classes.nameContainer}>
                 <RadioGroup row aria-label="gender" name="gender1">
-                    <FormControlLabel value="female" control={<Radio />} label="Мужской" />
-                    <FormControlLabel style = {{position:'absolute', left:'174px'}} value="male" control={<Radio />} label="Женский" />
+                    <FormControlLabel name = 'male' value="female" control={<Radio />} label="Мужской" onClick = {changeHandle} />
+                    <FormControlLabel name = 'male' style = {{position:'absolute', left:'174px'}} value="male" control={<Radio />} label="Женский" onClick = {changeHandle} />
                 </RadioGroup>
             </Grid>
         </Grid>
@@ -78,19 +79,19 @@ const CardPresent = () => {
         <Grid>
             <Grid item xs = {12}><Typography className = {classes.title} style ={{fontSize:'22px'}}>GitHub</Typography></Grid>
             <Grid item xs = {12}><Typography className = {classes.name}>Вставьте ссылку на GitHub</Typography></Grid>
-            <Grid item xs = {12}><TextField size = 'small' placeholder = 'Вставьте ссылку на GitHub' name = 'gitHub'
+            <Grid item xs = {12}><TextField size = 'small' value = {gitHub} placeholder = 'Вставьте ссылку на GitHub' name = 'gitHub'
                     variant = 'outlined' className = {classes.inputs} style = {{marginBottom:'44px'}} error = {gitHubError} helperText = {gitHubError} onChange = {changeHandle}
                 />
             </Grid>
             <Grid container style = {{marginBottom:'48px'}}>
-                <Grid item xs = {1}><Checkbox color = 'primary' checked = {checked} onChange = {handleChack} style = {{marginRight:'8px', width:'16px', height:'16px', color:'#1890FF' }} /></Grid> 
+                <Grid item xs = {1}><Checkbox ref = {checkRef} color = 'primary' checked = {checked} onChange = {handleChack} style = {{marginRight:'8px', width:'16px', height:'16px', color:'#1890FF' }} /></Grid> 
                 <Grid item xs = {11}><Typography className = {classes.name} style ={{width:'294px', marginTop:'6px'}}>* Я согласен с 
-                    <Link style ={{cursor:'pointer'}} >политикой конфиденциальности</Link>
+                    <Link style ={{cursor:'pointer'}} onClick = {handleOpenPolicy}>политикой конфиденциальности</Link>
                     </Typography>
                 </Grid>
             </Grid>
             {!acessButton && <Button variant="contained" color="primary" disabled style = {{width:'360px',height:'40px'}}>Отправить</Button>}
-            {acessButton && <Button variant="contained" color="primary" style = {{width:'360px',height:'40px'}}>Отправить</Button>}
+            {acessButton && <Button onClick = {handleOpenConfirm} variant="contained" color="primary" style = {{width:'360px',height:'40px'}}>Отправить</Button>}
         </Grid>
     </Grid>
     

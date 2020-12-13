@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme)=>({
         boxSizing: 'border-box',
         bordenrRadius: '2px',
         marginRight:'80px',
+        height:'40px'
     },
     resume:{
         fontFamily: 'SF Pro Display',
