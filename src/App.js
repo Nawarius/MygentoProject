@@ -1,10 +1,10 @@
 import React from 'react'
-import CardPresent from './Components/CardPresent'
+import CardContainer from './Components/CardContainer'
 
 
 function App() {
   return <>
-    <CardPresent />
+    <CardContainer />
   </>
 }
 
